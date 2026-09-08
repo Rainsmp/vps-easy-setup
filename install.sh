@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# ==============================
-# VPS Easy Setup
-# ==============================
-
 REPO="https://raw.githubusercontent.com/Rainsmp/vps-easy-setup/main"
 TEMP_DIR="/tmp/vps-easy-setup"
 
@@ -56,32 +52,10 @@ source "$TEMP_DIR/setup/ssh.sh"
 source "$TEMP_DIR/setup/timezone.sh"
 source "$TEMP_DIR/setup/user.sh"
 
-show_menu
-
 echo
 info "Checking VPS..."
 echo
 
 check_system || exit 1
 
-echo
-if ! ask_yes_no "Start VPS setup?"; then
-    info "Setup cancelled."
-    exit 0
-fi
-
-echo
-
-basic_setup
-update_system
-setup_firewall
-setup_hostname
-setup_security
-setup_ssh
-setup_timezone
-setup_user
-
-echo
-line
-success "VPS SETUP COMPLETED"
-line
+show_menu
