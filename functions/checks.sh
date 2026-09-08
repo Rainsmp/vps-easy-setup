@@ -17,8 +17,8 @@ check_os() {
 
     source /etc/os-release
 
-    if [[ "$ID" != "ubuntu" && "$ID" != "debian" ]]; then
-        warning "This VPS is not running Ubuntu or Debian."
+    if [[ "$ID" != "ubuntu" && "$ID" != "debian" && "$ID" != "kali" ]]; then
+        warning "This VPS is not running a supported Debian-based distribution."
         return 1
     fi
 
