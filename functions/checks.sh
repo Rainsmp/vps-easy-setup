@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# ==============================
-# VPS Easy Setup - VPS Checks
-# ==============================
-
 check_root() {
     if [[ "$EUID" -ne 0 ]]; then
         error "Root access is required."
@@ -21,27 +17,30 @@ check_os() {
 
     source /etc/os-release
 
-    success "Operating System: ${PRETTY_NAME:-Unknown}"
+    if [[ "$ID" != "ubuntu" && "$ID" != "debian" ]]; then
+        warning "This VPS is not running Ubuntu or Debian."
+        return 1
+    fi
+
+    success "Operating system: $PRETTY_NAME"
 }
 
-check_vps_info() {
-    echo
-    line
-    title "VPS INFORMATION"
-    line
+check_internet() {
+    info "Checking internet connection..."
 
-    echo "OS       : $(. /etc/os-release && echo "$PRETTY_NAME")"
-    echo "Hostname : $(hostname)"
-    echo "CPU      : $(nproc) cores"
-    echo "RAM      : $(free -h | awk '/Mem:/ {print $2}')"
-    echo "Disk     : $(df -h / | awk 'NR==2 {print $2}')"
-    echo "Uptime   : $(uptime -p)"
+    if curl -fsS --connect-timeout 5 https://github.com >/dev/null 2>&1; then
+        success "Internet connection available"
+        return 0
+    fi
 
-    line
+    error "Internet connection unavailable."
+    return 1
 }
 
 check_system() {
     check_root || return 1
     check_os || return 1
-    check_vps_info
+    check_internet || return 1
+
+    success "All system checks passed"
 }

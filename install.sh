@@ -9,6 +9,7 @@ TEMP_DIR="/tmp/vps-easy-setup"
 
 mkdir -p "$TEMP_DIR/functions"
 mkdir -p "$TEMP_DIR/setup"
+mkdir -p "$TEMP_DIR/config"
 
 download_file() {
     local file="$1"
@@ -21,31 +22,66 @@ download_file() {
 
 download_file "functions/colors.sh"
 download_file "functions/checks.sh"
+download_file "functions/input.sh"
 download_file "functions/menu.sh"
-download_file "setup/system.sh"
+download_file "functions/progress.sh"
+download_file "functions/utils.sh"
+
+download_file "config/defaults.conf"
+
+download_file "setup/basic.sh"
+download_file "setup/updates.sh"
+download_file "setup/firewall.sh"
+download_file "setup/hostname.sh"
+download_file "setup/security.sh"
+download_file "setup/ssh.sh"
+download_file "setup/timezone.sh"
+download_file "setup/user.sh"
 
 source "$TEMP_DIR/functions/colors.sh"
 source "$TEMP_DIR/functions/checks.sh"
+source "$TEMP_DIR/functions/input.sh"
 source "$TEMP_DIR/functions/menu.sh"
-source "$TEMP_DIR/setup/system.sh"
+source "$TEMP_DIR/functions/progress.sh"
+source "$TEMP_DIR/functions/utils.sh"
+
+source "$TEMP_DIR/config/defaults.conf"
+
+source "$TEMP_DIR/setup/basic.sh"
+source "$TEMP_DIR/setup/updates.sh"
+source "$TEMP_DIR/setup/firewall.sh"
+source "$TEMP_DIR/setup/hostname.sh"
+source "$TEMP_DIR/setup/security.sh"
+source "$TEMP_DIR/setup/ssh.sh"
+source "$TEMP_DIR/setup/timezone.sh"
+source "$TEMP_DIR/setup/user.sh"
 
 show_menu
 
 echo
-info "Starting VPS setup..."
+info "Checking VPS..."
 echo
 
 check_system || exit 1
 
 echo
-read -rp "Start VPS setup? [Y/n]: " answer
+if ! ask_yes_no "Start VPS setup?"; then
+    info "Setup cancelled."
+    exit 0
+fi
 
-case "$answer" in
-    n|N)
-        info "Setup cancelled."
-        exit 0
-        ;;
-    *)
-        system_setup
-        ;;
-esac
+echo
+
+basic_setup
+update_system
+setup_firewall
+setup_hostname
+setup_security
+setup_ssh
+setup_timezone
+setup_user
+
+echo
+line
+success "VPS SETUP COMPLETED"
+line

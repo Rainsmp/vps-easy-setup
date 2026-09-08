@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# ==============================
-# VPS Easy Setup - Colors
-# ==============================
-
 RESET='\033[0m'
 
 RED='\033[0;31m'
@@ -16,7 +12,6 @@ WHITE='\033[0;37m'
 
 BOLD='\033[1m'
 
-# Messages
 success() {
     echo -e "${GREEN}✓${RESET} $1"
 }
@@ -33,7 +28,6 @@ info() {
     echo -e "${CYAN}→${RESET} $1"
 }
 
-# UI
 title() {
     echo -e "${PURPLE}${BOLD}$1${RESET}"
 }
