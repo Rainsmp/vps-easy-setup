@@ -4,7 +4,7 @@ REPO="https://raw.githubusercontent.com/Rainsmp/vps-easy-setup/main"
 TEMP_DIR="/tmp/vps-easy-setup"
 
 mkdir -p "$TEMP_DIR/functions"
-mkdir -p "$TEMP_DIR/setup"
+mkdir -p "$TEMP_DIR/setup/network"
 mkdir -p "$TEMP_DIR/config"
 
 download_file() {
@@ -34,6 +34,10 @@ download_file "setup/ssh.sh"
 download_file "setup/timezone.sh"
 download_file "setup/user.sh"
 
+download_file "setup/network/root.sh"
+download_file "setup/network/system_info.sh"
+download_file "setup/network/tools.sh"
+
 source "$TEMP_DIR/functions/colors.sh"
 source "$TEMP_DIR/functions/checks.sh"
 source "$TEMP_DIR/functions/input.sh"
@@ -51,6 +55,10 @@ source "$TEMP_DIR/setup/security.sh"
 source "$TEMP_DIR/setup/ssh.sh"
 source "$TEMP_DIR/setup/timezone.sh"
 source "$TEMP_DIR/setup/user.sh"
+
+source "$TEMP_DIR/setup/network/root.sh"
+source "$TEMP_DIR/setup/network/system_info.sh"
+source "$TEMP_DIR/setup/network/tools.sh"
 
 echo
 info "Checking VPS..."
